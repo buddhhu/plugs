@@ -43,7 +43,7 @@ async def _(event):
     if not user.first_name:
         user.first_name = user.id
     pack = 1
-    userid = event.from_id
+    userid = event.sender_id
     packname = f"{user.first_name}'s @plusub Vol.{pack}"
     packshortname = f"vol_{pack}_with_{userid}"
     a = await event.reply("`Stealing this sticker bruh`")

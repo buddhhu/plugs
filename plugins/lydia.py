@@ -37,10 +37,10 @@ async def addcf(event):
     if reply_msg:
         session = lydia.create_session()
         session_id = session.id
-        if reply_msg.from_id is None:
+        if reply_msg.sender_id is None:
             return await event.edit("Invalid user type.")
-        ACC_LYDIA.update({(event.chat_id & reply_msg.from_id): session})
-        await event.edit("Lydia successfully (re)enabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        ACC_LYDIA.update({(event.chat_id & reply_msg.sender_id): session})
+        await event.edit("Lydia successfully (re)enabled for user: {} in chat: {}".format(str(reply_msg.sender_id), str(event.chat_id)))
     else:
         await event.edit("Reply to a user to activate Lydia AI on them")
 
@@ -53,8 +53,8 @@ async def remcf(event):
     await event.edit("Processing...")
     reply_msg = await event.get_reply_message()
     try:
-        del ACC_LYDIA[event.chat_id & reply_msg.from_id]
-        await event.edit("Lydia successfully disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        del ACC_LYDIA[event.chat_id & reply_msg.sender_id]
+        await event.edit("Lydia successfully disabled for user: {} in chat: {}".format(str(reply_msg.sender_id), str(event.chat_id)))
     except Exception:
         await event.edit("This person does not have Lydia activated on him/her.")
 
@@ -63,7 +63,7 @@ async def remcf(event):
 async def user(event):
     user_text = event.text
     try:
-        session = ACC_LYDIA[event.chat_id & event.from_id]
+        session = ACC_LYDIA[event.chat_id & event.sender_id]
         msg = event.text
         async with event.client.action(event.chat_id, "typing"):
             text_rep = session.think_thought(msg)

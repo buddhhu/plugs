@@ -23,7 +23,7 @@ async def _(event):
     await event.edit("Starting a Mass-FedBan...")
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
-        FBAN = previous_message.from_id
+        FBAN = previous_message.sender_id
         REASON = event.pattern_match.group(1)
         if REASON.strip() == "":
             REASON = " #TBMassBanned "
@@ -120,7 +120,7 @@ async def _(event):
     await event.edit("Starting a Mass-UnFedBan...")
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
-        FBAN = previous_message.from_id
+        FBAN = previous_message.sender_id
     else:
         FBAN = event.pattern_match.group(1)
     

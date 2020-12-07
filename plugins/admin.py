@@ -239,7 +239,7 @@ async def _(event):
     reply_msg_id = event.reply_to_msg_id
     if reply_msg_id:
         r_mesg = await event.get_reply_message()
-        to_ban_id = r_mesg.from_id
+        to_ban_id = r_mesg.sender_id
     elif input_str and "all" not in input_str:
         to_ban_id = int(input_str)
     else:
@@ -370,7 +370,7 @@ async def pin(msg):
     await event.client.send_message(event.chat_id, "`Pinned Successfully!`", reply_to=to_pin)
     await event.delete()
 
-    user = await get_user_from_id(msg.from_id, msg)
+    user = await get_user_sender_id(msg.sender_id, msg)
 
     if BOTLOG:
         await msg.client.send_message(
@@ -478,7 +478,7 @@ async def get_user_from_event(event):
     extra = None
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
-        user_obj = await event.client.get_entity(previous_message.from_id)
+        user_obj = await event.client.get_entity(previous_message.sender_id)
         extra = event.pattern_match.group(1)
     elif args:
         user = args[0]
@@ -509,7 +509,7 @@ async def get_user_from_event(event):
     return user_obj, extra
 
 
-async def get_user_from_id(user, event):
+async def get_user_sender_id(user, event):
     if isinstance(user, str):
         user = int(user)
 
